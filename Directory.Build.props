@@ -1,0 +1,43 @@
+<Project>
+    <PropertyGroup>
+        <!-- 版本信息 -->
+        <VersionPrefix>0.1.0</VersionPrefix>
+        <VersionSuffix>preview</VersionSuffix>
+
+        <!-- 包信息 -->
+        <Authors>WSharp Team</Authors>
+        <Company>WSharp</Company>
+        <Copyright>Copyright © 2025 WSharp</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/wsharp/wsharp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/wsharp/wsharp.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>framework;dotnet;clean-architecture;ddd;microservices;enterprise</PackageTags>
+        <Description>WSharp 是一个基于 Clean Architecture 的企业级 .NET 框架</Description>
+
+        <!-- 编译设置 -->
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+
+        <!-- NuGet 包设置 -->
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+        <!-- 代码分析 -->
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    </PropertyGroup>
+
+    <!-- 公共依赖包版本 -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    </ItemGroup>
+</Project>
