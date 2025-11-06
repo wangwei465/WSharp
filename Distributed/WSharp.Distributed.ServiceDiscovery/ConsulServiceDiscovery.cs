@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 namespace WSharp.Distributed.ServiceDiscovery;
 
 /// <summary>
-/// Consul-based service discovery implementation
+/// 基于 Consul 的服务发现实现
 /// </summary>
 public class ConsulServiceDiscovery : IServiceDiscovery
 {
@@ -38,7 +38,7 @@ public class ConsulServiceDiscovery : IServiceDiscovery
                 Meta = _options.Metadata
             };
 
-            // Configure health check if endpoint is provided
+            // 如果提供了端点，则配置健康检查
             if (!string.IsNullOrEmpty(_options.HealthCheckEndpoint))
             {
                 var healthCheckUrl = $"http://{_options.ServiceAddress}:{_options.ServicePort}{_options.HealthCheckEndpoint}";
@@ -53,14 +53,14 @@ public class ConsulServiceDiscovery : IServiceDiscovery
 
             await _consulClient.Agent.ServiceRegister(registration, cancellationToken);
             _logger.LogInformation(
-                "Service registered successfully: {ServiceName} ({ServiceId}) at {Address}:{Port}",
+                "服务注册成功: {ServiceName} ({ServiceId}) 于 {Address}:{Port}",
                 _options.ServiceName, _options.ServiceId, _options.ServiceAddress, _options.ServicePort);
 
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to register service: {ServiceName} ({ServiceId})",
+            _logger.LogError(ex, "服务注册失败: {ServiceName} ({ServiceId})",
                 _options.ServiceName, _options.ServiceId);
             return false;
         }
@@ -72,14 +72,14 @@ public class ConsulServiceDiscovery : IServiceDiscovery
         {
             await _consulClient.Agent.ServiceDeregister(_options.ServiceId, cancellationToken);
             _logger.LogInformation(
-                "Service deregistered successfully: {ServiceName} ({ServiceId})",
+                "服务注销成功: {ServiceName} ({ServiceId})",
                 _options.ServiceName, _options.ServiceId);
 
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to deregister service: {ServiceName} ({ServiceId})",
+            _logger.LogError(ex, "服务注销失败: {ServiceName} ({ServiceId})",
                 _options.ServiceName, _options.ServiceId);
             return false;
         }
@@ -96,7 +96,7 @@ public class ConsulServiceDiscovery : IServiceDiscovery
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get healthy services for: {ServiceName}", serviceName);
+            _logger.LogError(ex, "获取健康服务失败: {ServiceName}", serviceName);
             return Enumerable.Empty<ServiceRegistration>();
         }
     }
@@ -112,7 +112,7 @@ public class ConsulServiceDiscovery : IServiceDiscovery
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get all services for: {ServiceName}", serviceName);
+            _logger.LogError(ex, "获取所有服务失败: {ServiceName}", serviceName);
             return Enumerable.Empty<ServiceRegistration>();
         }
     }
@@ -125,11 +125,11 @@ public class ConsulServiceDiscovery : IServiceDiscovery
 
         if (!services.Any())
         {
-            _logger.LogWarning("No healthy services found for: {ServiceName}", serviceName);
+            _logger.LogWarning("未找到健康的服务: {ServiceName}", serviceName);
             return null;
         }
 
-        // Simple random load balancing
+        // 简单的随机负载均衡
         var index = _random.Next(services.Count);
         return services[index];
     }
@@ -143,7 +143,7 @@ public class ConsulServiceDiscovery : IServiceDiscovery
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get all service names");
+            _logger.LogError(ex, "获取所有服务名称失败");
             return Enumerable.Empty<string>();
         }
     }

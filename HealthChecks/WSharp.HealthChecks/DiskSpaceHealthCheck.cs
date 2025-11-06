@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 namespace WSharp.HealthChecks;
 
 /// <summary>
-/// Custom health check for disk space
+/// 磁盘空间健康检查
 /// </summary>
 public class DiskSpaceHealthCheck : IHealthCheck
 {
@@ -34,7 +34,7 @@ public class DiskSpaceHealthCheck : IHealthCheck
             {
                 return Task.FromResult(new HealthCheckResult(
                     context.Registration.FailureStatus,
-                    description: $"Drive {_driveName} is not ready"));
+                    description: $"磁盘 {_driveName} 未就绪"));
             }
 
             var freeSpaceMB = driveInfo.AvailableFreeSpace / 1024 / 1024;
@@ -48,7 +48,7 @@ public class DiskSpaceHealthCheck : IHealthCheck
                 { "UsedSpaceMB", totalSpaceMB - freeSpaceMB }
             };
 
-            _logger.LogDebug("Disk health check for {Drive}: {FreeSpaceMB}MB free", _driveName, freeSpaceMB);
+            _logger.LogDebug("磁盘健康检查 {Drive}: 剩余 {FreeSpaceMB}MB", _driveName, freeSpaceMB);
 
             var status = freeSpaceMB >= _minimumFreeMegabytes
                 ? HealthStatus.Healthy
@@ -56,12 +56,12 @@ public class DiskSpaceHealthCheck : IHealthCheck
 
             return Task.FromResult(new HealthCheckResult(
                 status,
-                description: $"Drive {_driveName}: {freeSpaceMB}MB free of {totalSpaceMB}MB",
+                description: $"磁盘 {_driveName}: {totalSpaceMB}MB 中剩余 {freeSpaceMB}MB",
                 data: data));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Disk health check failed for drive {Drive}", _driveName);
+            _logger.LogError(ex, "磁盘健康检查失败，磁盘 {Drive}", _driveName);
             return Task.FromResult(new HealthCheckResult(
                 context.Registration.FailureStatus,
                 exception: ex));

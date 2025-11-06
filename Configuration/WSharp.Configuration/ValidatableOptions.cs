@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 namespace WSharp.Configuration;
 
 /// <summary>
-/// Base class for configuration options with validation support
+/// 支持验证的配置选项基类
 /// </summary>
 public abstract class ValidatableOptions
 {
     /// <summary>
-    /// Validate the configuration options
+    /// 验证配置选项
     /// </summary>
     public virtual IEnumerable<ValidationResult> Validate()
     {
@@ -19,7 +19,7 @@ public abstract class ValidatableOptions
     }
 
     /// <summary>
-    /// Check if configuration is valid
+    /// 检查配置是否有效
     /// </summary>
     public virtual bool IsValid()
     {

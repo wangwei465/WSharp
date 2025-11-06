@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 namespace WSharp.Distributed.Transaction;
 
 /// <summary>
-/// Saga orchestrator implementation
+/// Saga 编排器实现
 /// </summary>
 public class SagaOrchestrator : ISagaOrchestrator
 {
@@ -44,24 +44,24 @@ public class SagaOrchestrator : ISagaOrchestrator
 
         try
         {
-            _logger.LogInformation("Starting saga {SagaName} with ID {SagaId}", context.SagaName, context.SagaId);
+            _logger.LogInformation("开始执行 Saga {SagaName}，ID 为 {SagaId}", context.SagaName, context.SagaId);
 
             context.State = SagaState.Running;
             await _stateRepository.SaveAsync(context, cancellationToken);
 
-            // Execute each step
+            // 执行每个步骤
             for (int i = context.CurrentStepIndex + 1; i < stepList.Count; i++)
             {
                 context.CurrentStepIndex = i;
                 var step = stepList[i];
 
-                _logger.LogInformation("Executing step {StepIndex}/{TotalSteps}: {StepName} for saga {SagaId}",
+                _logger.LogInformation("执行步骤 {StepIndex}/{TotalSteps}: {StepName}，Saga ID {SagaId}",
                     i + 1, stepList.Count, step.StepName, context.SagaId);
 
                 await step.ExecuteAsync(context, cancellationToken);
                 await _stateRepository.UpdateAsync(context, cancellationToken);
 
-                _logger.LogInformation("Step {StepName} completed successfully for saga {SagaId}",
+                _logger.LogInformation("步骤 {StepName} 成功完成，Saga ID {SagaId}",
                     step.StepName, context.SagaId);
             }
 
@@ -69,20 +69,20 @@ public class SagaOrchestrator : ISagaOrchestrator
             context.CompletedAt = DateTime.UtcNow;
             await _stateRepository.UpdateAsync(context, cancellationToken);
 
-            _logger.LogInformation("Saga {SagaId} completed successfully", context.SagaId);
+            _logger.LogInformation("Saga {SagaId} 成功完成", context.SagaId);
 
             return context;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Saga {SagaId} failed at step {StepIndex}. Starting compensation...",
+            _logger.LogError(ex, "Saga {SagaId} 在步骤 {StepIndex} 失败，开始补偿...",
                 context.SagaId, context.CurrentStepIndex);
 
             context.ErrorMessage = ex.Message;
             context.ErrorStackTrace = ex.StackTrace;
             await _stateRepository.UpdateAsync(context, cancellationToken);
 
-            // Compensate
+            // 执行补偿
             return await CompensateAsync(context, stepList, cancellationToken);
         }
     }
@@ -96,16 +96,16 @@ public class SagaOrchestrator : ISagaOrchestrator
 
         if (context == null)
         {
-            throw new InvalidOperationException($"Saga {sagaId} not found");
+            throw new InvalidOperationException($"未找到 Saga {sagaId}");
         }
 
         if (context.State == SagaState.Completed || context.State == SagaState.Compensated)
         {
-            _logger.LogWarning("Saga {SagaId} is already in terminal state {State}", sagaId, context.State);
+            _logger.LogWarning("Saga {SagaId} 已处于最终状态 {State}", sagaId, context.State);
             return context;
         }
 
-        _logger.LogInformation("Resuming saga {SagaId} from step {StepIndex}", sagaId, context.CurrentStepIndex);
+        _logger.LogInformation("从步骤 {StepIndex} 恢复 Saga {SagaId}", context.CurrentStepIndex, sagaId);
 
         return await ExecuteAsync(context, steps, cancellationToken);
     }
@@ -122,27 +122,27 @@ public class SagaOrchestrator : ISagaOrchestrator
             context.State = SagaState.Compensating;
             await _stateRepository.UpdateAsync(context, cancellationToken);
 
-            _logger.LogInformation("Starting compensation for saga {SagaId}", context.SagaId);
+            _logger.LogInformation("开始补偿 Saga {SagaId}", context.SagaId);
 
-            // Compensate steps in reverse order
+            // 按相反顺序补偿步骤
             for (int i = context.CurrentStepIndex; i >= 0; i--)
             {
                 var step = stepList[i];
 
-                _logger.LogInformation("Compensating step {StepName} for saga {SagaId}",
+                _logger.LogInformation("补偿步骤 {StepName}，Saga ID {SagaId}",
                     step.StepName, context.SagaId);
 
                 try
                 {
                     await step.CompensateAsync(context, cancellationToken);
-                    _logger.LogInformation("Step {StepName} compensated successfully for saga {SagaId}",
+                    _logger.LogInformation("步骤 {StepName} 补偿成功，Saga ID {SagaId}",
                         step.StepName, context.SagaId);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Failed to compensate step {StepName} for saga {SagaId}",
+                    _logger.LogError(ex, "补偿步骤 {StepName} 失败，Saga ID {SagaId}",
                         step.StepName, context.SagaId);
-                    // Continue with other compensations
+                    // 继续执行其他补偿
                 }
             }
 
@@ -150,13 +150,13 @@ public class SagaOrchestrator : ISagaOrchestrator
             context.CompletedAt = DateTime.UtcNow;
             await _stateRepository.UpdateAsync(context, cancellationToken);
 
-            _logger.LogInformation("Saga {SagaId} compensated successfully", context.SagaId);
+            _logger.LogInformation("Saga {SagaId} 补偿成功", context.SagaId);
 
             return context;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Compensation failed for saga {SagaId}", context.SagaId);
+            _logger.LogError(ex, "Saga {SagaId} 补偿失败", context.SagaId);
 
             context.State = SagaState.CompensationFailed;
             context.ErrorMessage = ex.Message;

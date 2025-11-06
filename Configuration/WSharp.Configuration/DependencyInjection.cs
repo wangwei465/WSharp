@@ -5,12 +5,12 @@ using Microsoft.Extensions.Options;
 namespace WSharp.Configuration;
 
 /// <summary>
-/// Dependency injection extensions for configuration
+/// 配置的依赖注入扩展
 /// </summary>
 public static class DependencyInjection
 {
     /// <summary>
-    /// Add WSharp configuration services
+    /// 添加 WSharp 配置服务
     /// </summary>
     public static IServiceCollection AddWSharpConfiguration(this IServiceCollection services)
     {
@@ -20,7 +20,7 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Add and configure options with validation
+    /// 添加并配置带验证的选项
     /// </summary>
     public static IServiceCollection AddValidatedOptions<TOptions>(
         this IServiceCollection services,
@@ -30,7 +30,7 @@ public static class DependencyInjection
     {
         services.Configure<TOptions>(configuration.GetSection(sectionName));
 
-        // Add post-configure validation
+        // 添加后置配置验证
         services.PostConfigure<TOptions>(options =>
         {
             var validator = new ConfigurationValidator();
@@ -41,7 +41,7 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Add and configure options with change notification
+    /// 添加并配置带变更通知的选项
     /// </summary>
     public static IServiceCollection AddNotifiableOptions<TOptions>(
         this IServiceCollection services,
@@ -56,7 +56,7 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Add and configure options with validation and change notification
+    /// 添加并配置带验证和变更通知的选项
     /// </summary>
     public static IServiceCollection AddValidatedNotifiableOptions<TOptions>(
         this IServiceCollection services,
@@ -71,20 +71,20 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Add configuration from multiple sources
+    /// 从多个来源添加配置
     /// </summary>
     public static IConfigurationBuilder AddWSharpConfiguration(
         this IConfigurationBuilder builder,
         string environmentName,
         bool reloadOnChange = true)
     {
-        // Add appsettings.json
+        // 添加 appsettings.json
         builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: reloadOnChange);
 
-        // Add environment-specific appsettings
+        // 添加特定环境的 appsettings
         builder.AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: reloadOnChange);
 
-        // Add environment variables
+        // 添加环境变量
         builder.AddEnvironmentVariables();
 
         return builder;

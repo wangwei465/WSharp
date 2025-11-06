@@ -3,17 +3,17 @@ using Microsoft.Extensions.Options;
 namespace WSharp.Configuration;
 
 /// <summary>
-/// Configuration change notification interface
+/// 配置变更通知接口
 /// </summary>
 public interface IConfigurationChangeNotifier<TOptions> where TOptions : class
 {
     /// <summary>
-    /// Subscribe to configuration changes
+    /// 订阅配置变更
     /// </summary>
     IDisposable OnChange(Action<TOptions, string?> listener);
 
     /// <summary>
-    /// Get current configuration value
+    /// 获取当前配置值
     /// </summary>
     TOptions CurrentValue { get; }
 }

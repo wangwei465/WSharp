@@ -7,12 +7,12 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 namespace WSharp.HealthChecks;
 
 /// <summary>
-/// Dependency injection extensions for health checks
+/// 健康检查的依赖注入扩展
 /// </summary>
 public static class DependencyInjection
 {
     /// <summary>
-    /// Add WSharp health checks
+    /// 添加 WSharp 健康检查服务
     /// </summary>
     public static IServiceCollection AddWSharpHealthChecks(
         this IServiceCollection services,
@@ -25,19 +25,19 @@ public static class DependencyInjection
 
         var healthChecksBuilder = services.AddHealthChecks();
 
-        // Add memory health check
+        // 添加内存健康检查
         healthChecksBuilder.AddCheck<MemoryHealthCheck>(
             "memory",
             failureStatus: HealthStatus.Degraded,
             tags: new[] { "memory", "system" });
 
-        // Add disk space health check
+        // 添加磁盘空间健康检查
         healthChecksBuilder.AddCheck<DiskSpaceHealthCheck>(
             "disk_space",
             failureStatus: HealthStatus.Degraded,
             tags: new[] { "disk", "system" });
 
-        // SQL Server
+        // SQL Server 健康检查
         if (options.EnableSqlServer && !string.IsNullOrEmpty(options.SqlServerConnectionString))
         {
             healthChecksBuilder.AddSqlServer(
@@ -48,7 +48,7 @@ public static class DependencyInjection
                 timeout: TimeSpan.FromSeconds(options.TimeoutSeconds));
         }
 
-        // MongoDB
+        // MongoDB 健康检查
         if (options.EnableMongoDb && !string.IsNullOrEmpty(options.MongoDbConnectionString))
         {
             healthChecksBuilder.AddMongoDb(
@@ -59,7 +59,7 @@ public static class DependencyInjection
                 timeout: TimeSpan.FromSeconds(options.TimeoutSeconds));
         }
 
-        // Redis
+        // Redis 健康检查
         if (options.EnableRedis && !string.IsNullOrEmpty(options.RedisConnectionString))
         {
             healthChecksBuilder.AddRedis(
@@ -70,7 +70,7 @@ public static class DependencyInjection
                 timeout: TimeSpan.FromSeconds(options.TimeoutSeconds));
         }
 
-        // RabbitMQ
+        // RabbitMQ 健康检查
         if (options.EnableRabbitMQ && !string.IsNullOrEmpty(options.RabbitMQConnectionString))
         {
             healthChecksBuilder.AddRabbitMQ(
@@ -81,7 +81,7 @@ public static class DependencyInjection
                 timeout: TimeSpan.FromSeconds(options.TimeoutSeconds));
         }
 
-        // Kafka
+        // Kafka 健康检查
         if (options.EnableKafka && !string.IsNullOrEmpty(options.KafkaBootstrapServers))
         {
             healthChecksBuilder.AddKafka(
@@ -99,7 +99,7 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Add custom health check
+    /// 添加自定义健康检查
     /// </summary>
     public static IHealthChecksBuilder AddCustomHealthCheck<THealthCheck>(
         this IHealthChecksBuilder builder,

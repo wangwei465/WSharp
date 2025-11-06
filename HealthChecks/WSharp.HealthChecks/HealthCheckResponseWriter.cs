@@ -6,12 +6,12 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 namespace WSharp.HealthChecks;
 
 /// <summary>
-/// Health check response writer
+/// 健康检查响应写入器
 /// </summary>
 public static class HealthCheckResponseWriter
 {
     /// <summary>
-    /// Write health check response as JSON
+    /// 将健康检查响应写入为 JSON 格式
     /// </summary>
     public static async Task WriteJsonResponse(HttpContext context, HealthReport report)
     {
@@ -43,7 +43,7 @@ public static class HealthCheckResponseWriter
     }
 
     /// <summary>
-    /// Write simplified health check response
+    /// 写入简化的健康检查响应
     /// </summary>
     public static async Task WriteSimpleResponse(HttpContext context, HealthReport report)
     {

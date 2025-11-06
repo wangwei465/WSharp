@@ -6,45 +6,45 @@ using WSharp.Distributed.ServiceDiscovery.LoadBalancers;
 namespace WSharp.Distributed.ServiceDiscovery;
 
 /// <summary>
-/// Dependency injection extensions for service discovery
+/// 服务发现的依赖注入扩展
 /// </summary>
 public static class DependencyInjection
 {
     /// <summary>
-    /// Add service discovery with Consul
+    /// 添加基于 Consul 的服务发现
     /// </summary>
     public static IServiceCollection AddWSharpServiceDiscovery(
         this IServiceCollection services,
         Action<ServiceDiscoveryOptions> configureOptions)
     {
-        // Configure options
+        // 配置选项
         services.Configure(configureOptions);
 
-        // Get options for Consul client configuration
+        // 获取用于 Consul 客户端配置的选项
         var options = new ServiceDiscoveryOptions();
         configureOptions(options);
 
-        // Register Consul client
+        // 注册 Consul 客户端
         services.AddSingleton<IConsulClient>(provider =>
             new ConsulClient(config =>
             {
                 config.Address = new Uri(options.ConsulAddress);
             }));
 
-        // Register service discovery
+        // 注册服务发现
         services.AddSingleton<IServiceDiscovery, ConsulServiceDiscovery>();
 
-        // Register load balancers
+        // 注册负载均衡器
         services.AddSingleton<ILoadBalancer, RandomLoadBalancer>();
 
-        // Register hosted service for automatic registration/deregistration
+        // 注册后台服务以实现自动注册/注销
         services.AddHostedService<ServiceDiscoveryHostedService>();
 
         return services;
     }
 
     /// <summary>
-    /// Add service discovery with Consul and custom load balancer
+    /// 添加基于 Consul 的服务发现和自定义负载均衡器
     /// </summary>
     public static IServiceCollection AddWSharpServiceDiscovery<TLoadBalancer>(
         this IServiceCollection services,
@@ -53,27 +53,27 @@ public static class DependencyInjection
     {
         services.AddWSharpServiceDiscovery(configureOptions);
 
-        // Replace load balancer
+        // 替换负载均衡器
         services.AddSingleton<ILoadBalancer, TLoadBalancer>();
 
         return services;
     }
 
     /// <summary>
-    /// Add service discovery without automatic registration (for client-only scenarios)
+    /// 添加无自动注册的服务发现（用于仅客户端场景）
     /// </summary>
     public static IServiceCollection AddWSharpServiceDiscoveryClient(
         this IServiceCollection services,
         string consulAddress = "http://localhost:8500")
     {
-        // Register Consul client
+        // 注册 Consul 客户端
         services.AddSingleton<IConsulClient>(provider =>
             new ConsulClient(config =>
             {
                 config.Address = new Uri(consulAddress);
             }));
 
-        // Register service discovery without auto-registration
+        // 注册服务发现但不进行自动注册
         services.Configure<ServiceDiscoveryOptions>(options =>
         {
             options.ConsulAddress = consulAddress;

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 namespace WSharp.HealthChecks;
 
 /// <summary>
-/// Custom health check for memory usage
+/// 内存使用健康检查
 /// </summary>
 public class MemoryHealthCheck : IHealthCheck
 {
@@ -32,7 +32,7 @@ public class MemoryHealthCheck : IHealthCheck
                 { "Gen2Collections", GC.CollectionCount(2) }
             };
 
-            _logger.LogDebug("Memory health check: {AllocatedBytes} bytes allocated", allocated);
+            _logger.LogDebug("内存健康检查: 已分配 {AllocatedBytes} 字节", allocated);
 
             var status = allocated < _thresholdBytes
                 ? HealthStatus.Healthy
@@ -40,12 +40,12 @@ public class MemoryHealthCheck : IHealthCheck
 
             return Task.FromResult(new HealthCheckResult(
                 status,
-                description: $"Memory usage: {allocated / 1024 / 1024}MB",
+                description: $"内存使用: {allocated / 1024 / 1024}MB",
                 data: data));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Memory health check failed");
+            _logger.LogError(ex, "内存健康检查失败");
             return Task.FromResult(new HealthCheckResult(
                 context.Registration.FailureStatus,
                 exception: ex));

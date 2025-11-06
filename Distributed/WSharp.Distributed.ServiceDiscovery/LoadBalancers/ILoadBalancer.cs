@@ -1,12 +1,12 @@
 namespace WSharp.Distributed.ServiceDiscovery.LoadBalancers;
 
 /// <summary>
-/// Load balancer interface for service selection
+/// 用于服务选择的负载均衡器接口
 /// </summary>
 public interface ILoadBalancer
 {
     /// <summary>
-    /// Select a service instance from available instances
+    /// 从可用实例中选择一个服务实例
     /// </summary>
     ServiceRegistration? SelectService(IList<ServiceRegistration> services);
 }

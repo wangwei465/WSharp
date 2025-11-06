@@ -1,72 +1,72 @@
 namespace WSharp.Gateway.Configuration;
 
 /// <summary>
-/// Gateway route configuration
+/// 网关路由配置
 /// </summary>
 public class GatewayRouteConfig
 {
     /// <summary>
-    /// Route ID (unique identifier)
+    /// 路由 ID（唯一标识符）
     /// </summary>
     public string RouteId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Cluster ID to route to
+    /// 要路由到的集群 ID
     /// </summary>
     public string ClusterId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Route match pattern
+    /// 路由匹配模式
     /// </summary>
     public string Match { get; set; } = string.Empty;
 
     /// <summary>
-    /// Route order (lower values are matched first)
+    /// 路由顺序（值越小优先级越高）
     /// </summary>
     public int Order { get; set; } = 0;
 
     /// <summary>
-    /// Require authentication for this route
+    /// 此路由是否需要身份认证
     /// </summary>
     public bool RequireAuthentication { get; set; } = false;
 
     /// <summary>
-    /// Required roles for this route
+    /// 此路由所需的角色
     /// </summary>
     public string[]? RequiredRoles { get; set; }
 
     /// <summary>
-    /// Enable rate limiting for this route
+    /// 为此路由启用速率限制
     /// </summary>
     public bool EnableRateLimiting { get; set; } = false;
 
     /// <summary>
-    /// Rate limit per minute for this route
+    /// 此路由每分钟的速率限制
     /// </summary>
     public int? RateLimitPerMinute { get; set; }
 
     /// <summary>
-    /// Request timeout in seconds
+    /// 请求超时时间（秒）
     /// </summary>
     public int? TimeoutSeconds { get; set; }
 
     /// <summary>
-    /// Custom headers to add to the request
+    /// 要添加到请求的自定义头部
     /// </summary>
     public Dictionary<string, string>? RequestHeaders { get; set; }
 
     /// <summary>
-    /// Headers to remove from the request
+    /// 要从请求中移除的头部
     /// </summary>
     public string[]? RemoveRequestHeaders { get; set; }
 
     /// <summary>
-    /// Custom headers to add to the response
+    /// 要添加到响应的自定义头部
     /// </summary>
     public Dictionary<string, string>? ResponseHeaders { get; set; }
 
     /// <summary>
-    /// Headers to remove from the response
+    /// 要从响应中移除的头部
     /// </summary>
     public string[]? RemoveResponseHeaders { get; set; }
 }

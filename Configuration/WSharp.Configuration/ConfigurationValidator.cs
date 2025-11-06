@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace WSharp.Configuration;
 
 /// <summary>
-/// Default configuration validator implementation
+/// 默认配置验证器实现
 /// </summary>
 public class ConfigurationValidator : IConfigurationValidator
 {
@@ -30,7 +30,7 @@ public class ConfigurationValidator : IConfigurationValidator
                 validationResults.Select(r => r.ErrorMessage));
 
             throw new ValidationException(
-                $"Configuration validation failed for {typeof(TOptions).Name}:{Environment.NewLine}{errors}");
+                $"{typeof(TOptions).Name} 配置验证失败:{Environment.NewLine}{errors}");
         }
     }
 }

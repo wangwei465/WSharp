@@ -6,7 +6,8 @@
       "Bash(findstr:*)",
       "Bash(xargs ls:*)",
       "Bash(dotnet build:*)",
-      "Bash(find samples/WSharp.Sample.Api -name *.csproj -exec cat {})"
+      "Bash(find samples/WSharp.Sample.Api -name *.csproj -exec cat {})",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

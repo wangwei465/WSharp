@@ -3,12 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace WSharp.Distributed.Transaction;
 
 /// <summary>
-/// Dependency injection extensions for distributed transactions
+/// 分布式事务的依赖注入扩展
 /// </summary>
 public static class DependencyInjection
 {
     /// <summary>
-    /// Add Saga pattern support with in-memory state storage
+    /// 添加带内存状态存储的 Saga 模式支持
     /// </summary>
     public static IServiceCollection AddWSharpSaga(this IServiceCollection services)
     {
@@ -19,7 +19,7 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Add Saga pattern support with custom state repository
+    /// 添加带自定义状态仓储的 Saga 模式支持
     /// </summary>
     public static IServiceCollection AddWSharpSaga<TRepository>(this IServiceCollection services)
         where TRepository : class, ISagaStateRepository
@@ -31,7 +31,7 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Add Saga pattern support with custom state repository factory
+    /// 添加带自定义状态仓储工厂的 Saga 模式支持
     /// </summary>
     public static IServiceCollection AddWSharpSaga(
         this IServiceCollection services,

@@ -7,13 +7,15 @@ using Yarp.ReverseProxy.Configuration;
 namespace WSharp.Gateway;
 
 /// <summary>
-/// Dependency injection extensions for gateway
+/// 网关依赖注入扩展
 /// </summary>
 public static class DependencyInjection
 {
     /// <summary>
-    /// Add WSharp Gateway with YARP reverse proxy
+    /// 添加 WSharp 网关和 YARP 反向代理
     /// </summary>
+    /// <param name="services">服务集合</param>
+    /// <param name="configureOptions">配置选项委托</param>
     public static IServiceCollection AddWSharpGateway(
         this IServiceCollection services,
         Action<GatewayOptions>? configureOptions = null)
@@ -23,10 +25,10 @@ public static class DependencyInjection
 
         services.Configure(configureOptions ?? (_ => { }));
 
-        // Add YARP reverse proxy
+        // 添加 YARP 反向代理
         var proxyBuilder = services.AddReverseProxy();
 
-        // Add custom transforms
+        // 添加自定义转换器
         services.AddSingleton<CustomRequestTransform>();
         services.AddSingleton<CustomResponseTransform>();
 
@@ -34,8 +36,10 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Add WSharp Gateway with custom config provider
+    /// 使用自定义配置提供程序添加 WSharp 网关
     /// </summary>
+    /// <param name="services">服务集合</param>
+    /// <param name="configProvider">代理配置提供程序</param>
     public static IServiceCollection AddWSharpGateway(
         this IServiceCollection services,
         IProxyConfigProvider configProvider)
@@ -51,14 +55,15 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Use WSharp Gateway middleware
+    /// 使用 WSharp 网关中间件
     /// </summary>
+    /// <param name="app">应用程序构建器</param>
     public static IApplicationBuilder UseWSharpGateway(this IApplicationBuilder app)
     {
-        // Add logging middleware
+        // 添加日志记录中间件
         app.UseMiddleware<GatewayLoggingMiddleware>();
 
-        // Use YARP reverse proxy
+        // 使用 YARP 反向代理
         app.UseRouting();
         app.UseEndpoints(endpoints =>
         {
@@ -72,8 +77,10 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Use WSharp Gateway with custom configuration
+    /// 使用自定义配置的 WSharp 网关
     /// </summary>
+    /// <param name="app">应用程序构建器</param>
+    /// <param name="configurePipeline">配置管道委托</param>
     public static IApplicationBuilder UseWSharpGateway(
         this IApplicationBuilder app,
         Action<IApplicationBuilder> configurePipeline)

@@ -1,27 +1,27 @@
 namespace WSharp.Distributed.Transaction;
 
 /// <summary>
-/// Saga orchestrator interface
+/// Saga 编排器接口
 /// </summary>
 public interface ISagaOrchestrator
 {
     /// <summary>
-    /// Execute a saga
+    /// 执行 Saga
     /// </summary>
     Task<SagaContext> ExecuteAsync(SagaContext context, IEnumerable<SagaStep> steps, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Execute a saga with input data
+    /// 使用输入数据执行 Saga
     /// </summary>
     Task<SagaContext> ExecuteAsync<TInput>(string sagaName, TInput input, IEnumerable<SagaStep> steps, CancellationToken cancellationToken = default) where TInput : class;
 
     /// <summary>
-    /// Resume a saga from its current state
+    /// 从当前状态恢复 Saga
     /// </summary>
     Task<SagaContext> ResumeAsync(string sagaId, IEnumerable<SagaStep> steps, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Compensate a saga (rollback all completed steps)
+    /// 补偿 Saga（回滚所有已完成的步骤）
     /// </summary>
     Task<SagaContext> CompensateAsync(SagaContext context, IEnumerable<SagaStep> steps, CancellationToken cancellationToken = default);
 }

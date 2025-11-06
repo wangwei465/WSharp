@@ -3,22 +3,22 @@ using System.ComponentModel.DataAnnotations;
 namespace WSharp.Configuration;
 
 /// <summary>
-/// Configuration validator interface
+/// 配置验证器接口
 /// </summary>
 public interface IConfigurationValidator
 {
     /// <summary>
-    /// Validate configuration object
+    /// 验证配置对象
     /// </summary>
     IEnumerable<ValidationResult> Validate<TOptions>(TOptions options) where TOptions : class;
 
     /// <summary>
-    /// Check if configuration is valid
+    /// 检查配置是否有效
     /// </summary>
     bool IsValid<TOptions>(TOptions options) where TOptions : class;
 
     /// <summary>
-    /// Validate and throw exception if invalid
+    /// 验证并在无效时抛出异常
     /// </summary>
     void ValidateAndThrow<TOptions>(TOptions options) where TOptions : class;
 }

@@ -1,47 +1,47 @@
 namespace WSharp.Distributed.ServiceDiscovery;
 
 /// <summary>
-/// Service registration information
+/// 服务注册信息
 /// </summary>
 public class ServiceRegistration
 {
     /// <summary>
-    /// Service ID
+    /// 服务ID
     /// </summary>
     public string ServiceId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Service name
+    /// 服务名称
     /// </summary>
     public string ServiceName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Service address
+    /// 服务地址
     /// </summary>
     public string Address { get; set; } = string.Empty;
 
     /// <summary>
-    /// Service port
+    /// 服务端口
     /// </summary>
     public int Port { get; set; }
 
     /// <summary>
-    /// Service tags
+    /// 服务标签
     /// </summary>
     public string[] Tags { get; set; } = Array.Empty<string>();
 
     /// <summary>
-    /// Service metadata
+    /// 服务元数据
     /// </summary>
     public Dictionary<string, string> Metadata { get; set; } = new();
 
     /// <summary>
-    /// Health status
+    /// 健康状态
     /// </summary>
     public string HealthStatus { get; set; } = "Unknown";
 
     /// <summary>
-    /// Full service URL
+    /// 完整的服务URL
     /// </summary>
     public string ServiceUrl => $"{Address}:{Port}";
 }

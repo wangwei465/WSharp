@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 namespace WSharp.Distributed.ServiceDiscovery;
 
 /// <summary>
-/// Background service for automatic service registration and deregistration
+/// 用于自动服务注册和注销的后台服务
 /// </summary>
 public class ServiceDiscoveryHostedService : IHostedService
 {
@@ -27,21 +27,21 @@ public class ServiceDiscoveryHostedService : IHostedService
     {
         if (!_options.EnableAutoRegistration)
         {
-            _logger.LogInformation("Automatic service registration is disabled");
+            _logger.LogInformation("自动服务注册已禁用");
             return;
         }
 
-        _logger.LogInformation("Starting service registration for: {ServiceName}", _options.ServiceName);
+        _logger.LogInformation("开始服务注册: {ServiceName}", _options.ServiceName);
 
         var registered = await _serviceDiscovery.RegisterServiceAsync(cancellationToken);
 
         if (registered)
         {
-            _logger.LogInformation("Service registration completed successfully");
+            _logger.LogInformation("服务注册成功完成");
         }
         else
         {
-            _logger.LogWarning("Service registration failed");
+            _logger.LogWarning("服务注册失败");
         }
     }
 
@@ -49,21 +49,21 @@ public class ServiceDiscoveryHostedService : IHostedService
     {
         if (!_options.EnableAutoDeregistration)
         {
-            _logger.LogInformation("Automatic service deregistration is disabled");
+            _logger.LogInformation("自动服务注销已禁用");
             return;
         }
 
-        _logger.LogInformation("Starting service deregistration for: {ServiceName}", _options.ServiceName);
+        _logger.LogInformation("开始服务注销: {ServiceName}", _options.ServiceName);
 
         var deregistered = await _serviceDiscovery.DeregisterServiceAsync(cancellationToken);
 
         if (deregistered)
         {
-            _logger.LogInformation("Service deregistration completed successfully");
+            _logger.LogInformation("服务注销成功完成");
         }
         else
         {
-            _logger.LogWarning("Service deregistration failed");
+            _logger.LogWarning("服务注销失败");
         }
     }
 }

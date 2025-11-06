@@ -3,12 +3,12 @@ using Microsoft.Extensions.Configuration;
 namespace WSharp.Configuration;
 
 /// <summary>
-/// Configuration helper utilities
+/// 配置辅助工具类
 /// </summary>
 public static class ConfigurationHelper
 {
     /// <summary>
-    /// Get configuration value with type conversion
+    /// 获取配置值并进行类型转换
     /// </summary>
     public static T GetValue<T>(this IConfiguration configuration, string key, T defaultValue = default!)
     {
@@ -33,7 +33,7 @@ public static class ConfigurationHelper
     }
 
     /// <summary>
-    /// Get configuration section and bind to object
+    /// 获取配置节并绑定到对象
     /// </summary>
     public static T GetSection<T>(this IConfiguration configuration, string sectionName) where T : class, new()
     {
@@ -44,7 +44,7 @@ public static class ConfigurationHelper
     }
 
     /// <summary>
-    /// Check if configuration section exists
+    /// 检查配置节是否存在
     /// </summary>
     public static bool SectionExists(this IConfiguration configuration, string sectionName)
     {
@@ -52,7 +52,7 @@ public static class ConfigurationHelper
     }
 
     /// <summary>
-    /// Get all configuration keys
+    /// 获取所有配置键
     /// </summary>
     public static IEnumerable<string> GetAllKeys(this IConfiguration configuration)
     {
@@ -78,7 +78,7 @@ public static class ConfigurationHelper
     }
 
     /// <summary>
-    /// Get configuration as dictionary
+    /// 将配置转换为字典
     /// </summary>
     public static Dictionary<string, string?> ToDictionary(this IConfiguration configuration)
     {

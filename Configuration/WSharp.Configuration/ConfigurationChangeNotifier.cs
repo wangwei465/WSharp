@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 namespace WSharp.Configuration;
 
 /// <summary>
-/// Configuration change notifier implementation
+/// 配置变更通知实现
 /// </summary>
 public class ConfigurationChangeNotifier<TOptions> : IConfigurationChangeNotifier<TOptions>
     where TOptions : class
